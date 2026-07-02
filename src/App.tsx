@@ -10,8 +10,9 @@ function App() {
   const { settings } = useAppStore()
 
   useEffect(() => {
-    const path = window.location.pathname
-    if (path === '/ambient' || path.includes('ambient')) {
+    const path = sessionStorage.redirectFrom404 || window.location.pathname
+    sessionStorage.removeItem('redirectFrom404')
+    if (path === '/ambient' || path.includes('ambient') || path === '/relife/ambient') {
       setRoute('ambient')
     }
   }, [])
