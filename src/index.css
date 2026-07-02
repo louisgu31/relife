@@ -1,0 +1,556 @@
+@import "tailwindcss";
+
+/* ===== ReLife Design System: Vintage Ledger × Ambient AI ===== */
+
+@theme {
+  /* Paper System */
+  --color-paper: #F3E9D7;
+  --color-paper-fold: #E6D5B8;
+  --color-paper-stain: #C9B79C;
+  --color-paper-ink-faded: #8C7A66;
+
+  /* Ink System */
+  --color-ink: #2B2A28;
+  --color-ink-secondary: #5A5248;
+  --color-ink-subtle: #8A7F73;
+
+  /* AI Accent — calm life signs */
+  --color-presence: #6D8B74;
+  --color-context: #7C9D96;
+  --color-circadian: #A4B494;
+  --color-alert: #D0C9A6;
+  --color-health: #B8956A;
+
+  /* Fonts */
+  --font-serif: 'Noto Serif SC', 'Cormorant Garamond', Georgia, serif;
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-hand: 'Caveat', cursive;
+}
+
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+  background: var(--color-paper);
+  color: var(--color-ink);
+  font-family: var(--font-serif);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* ===== Paper Texture Overlay ===== */
+.paper-texture {
+  position: relative;
+}
+.paper-texture::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.03'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 1;
+  border-radius: inherit;
+}
+
+/* ===== Ledger Card ===== */
+.ledger-card {
+  background: linear-gradient(135deg, #F3E9D7 0%, #EDE0CC 50%, #E6D5B8 100%);
+  border: 1.5px solid var(--color-paper-stain);
+  border-radius: 4px;
+  position: relative;
+  box-shadow: 
+    2px 2px 6px rgba(140, 122, 102, 0.15),
+    inset 0 0 30px rgba(255, 255, 255, 0.1);
+}
+.ledger-card::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: repeating-linear-gradient(
+    to bottom,
+    var(--color-paper-stain) 0px,
+    var(--color-paper-stain) 4px,
+    transparent 4px,
+    transparent 8px
+  );
+  opacity: 0.4;
+}
+
+/* ===== Ink-Settling Animations ===== */
+@keyframes ink-appear {
+  0% {
+    opacity: 0;
+    filter: blur(3px);
+    transform: translateY(2px);
+  }
+  60% {
+    opacity: 0.7;
+    filter: blur(0.5px);
+  }
+  100% {
+    opacity: 1;
+    filter: blur(0);
+    transform: translateY(0);
+  }
+}
+.animate-ink-appear {
+  animation: ink-appear 0.5s ease-out forwards;
+}
+
+@keyframes fade-in {
+  from { opacity: 0; transform: translateY(6px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+.animate-fade-in {
+  animation: fade-in 0.4s ease-out forwards;
+}
+
+@keyframes page-corner {
+  0% {
+    opacity: 0;
+    transform: perspective(600px) rotateY(-8deg) scale(0.97);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(600px) rotateY(0deg) scale(1);
+  }
+}
+.animate-page-corner {
+  animation: page-corner 0.5s ease-out forwards;
+}
+
+/* Breathing Ink Dot */
+@keyframes breathe {
+  0%, 100% {
+    opacity: 0.3;
+    transform: scale(0.85);
+  }
+  50% {
+    opacity: 0.7;
+    transform: scale(1.15);
+  }
+}
+.animate-breathe {
+  animation: breathe 4s ease-in-out infinite;
+}
+
+@keyframes breathe-present {
+  0%, 100% {
+    opacity: 0.5;
+    transform: scale(0.9);
+    box-shadow: 0 0 4px rgba(109, 139, 116, 0.3);
+  }
+  50% {
+    opacity: 0.9;
+    transform: scale(1.2);
+    box-shadow: 0 0 12px rgba(109, 139, 116, 0.4);
+  }
+}
+.animate-breathe-present {
+  animation: breathe-present 3s ease-in-out infinite;
+}
+
+/* Ink bloom on active interaction */
+@keyframes ink-bloom {
+  0% {
+    opacity: 0.3;
+    transform: scale(0.8);
+    box-shadow: 0 0 4px rgba(109, 139, 116, 0.2);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.3);
+    box-shadow: 0 0 20px rgba(109, 139, 116, 0.5);
+  }
+  100% {
+    opacity: 0.7;
+    transform: scale(1);
+    box-shadow: 0 0 8px rgba(109, 139, 116, 0.3);
+  }
+}
+.animate-ink-bloom {
+  animation: ink-bloom 0.6s ease-out forwards;
+}
+
+/* Handwritten margin note animation */
+@keyframes margin-note {
+  0% {
+    opacity: 0;
+    transform: translateX(8px) rotate(0.5deg);
+    filter: blur(2px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateX(0) rotate(0deg);
+    filter: blur(0);
+  }
+}
+.animate-margin-note {
+  animation: margin-note 0.6s ease-out forwards;
+}
+
+/* Paper glow — "lit from behind" */
+@keyframes paper-glow {
+  0%, 100% {
+    box-shadow: 0 0 20px rgba(164, 180, 148, 0.1), 0 0 40px rgba(164, 180, 148, 0.05);
+  }
+  50% {
+    box-shadow: 0 0 30px rgba(164, 180, 148, 0.2), 0 0 60px rgba(164, 180, 148, 0.1);
+  }
+}
+.animate-paper-glow {
+  animation: paper-glow 6s ease-in-out infinite;
+}
+
+/* ===== Scrollbar ===== */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-paper-fold);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-paper-stain);
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-paper-ink-faded);
+}
+
+/* ===== Selection ===== */
+::selection {
+  background: rgba(109, 139, 116, 0.2);
+  color: var(--color-ink);
+}
+
+/* ===== Focus ring ===== */
+*:focus-visible {
+  outline: 2px solid var(--color-circadian);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* ===== Accessibility: High Contrast ===== */
+.high-contrast {
+  --color-paper: #FAF3E3;
+  --color-paper-fold: #F0E4C8;
+  --color-paper-stain: #A89070;
+  --color-paper-ink-faded: #6B5A48;
+  --color-ink: #1A1917;
+  --color-ink-secondary: #3A342C;
+  --color-ink-subtle: #5A5248;
+}
+
+.high-contrast .ledger-card {
+  border-width: 2px;
+  border-color: var(--color-paper-stain);
+  box-shadow: 
+    2px 2px 8px rgba(100, 80, 60, 0.2),
+    inset 0 0 30px rgba(255, 255, 255, 0.15);
+}
+
+.high-contrast .paper-texture::before {
+  opacity: 0.05;
+}
+
+/* ===== Accessibility: Large Text ===== */
+.large-text {
+  font-size: 18px;
+}
+
+.large-text .font-hand {
+  font-size: 1.3em;
+}
+
+.large-text .text-sm {
+  font-size: 0.9rem;
+}
+
+.large-text .text-xs {
+  font-size: 0.8rem;
+}
+
+.large-text .text-lg {
+  font-size: 1.35rem;
+}
+
+.large-text .text-xl {
+  font-size: 1.5rem;
+}
+
+.large-text .text-2xl {
+  font-size: 1.75rem;
+}
+
+.large-text .text-3xl {
+  font-size: 2.25rem;
+}
+
+.large-text .text-4xl {
+  font-size: 2.75rem;
+}
+
+.large-text .text-5xl {
+  font-size: 3.25rem;
+}
+
+.large-text .text-6xl {
+  font-size: 4rem;
+}
+
+/* ===== Accessibility: Reduced Motion ===== */
+.reduced-motion *,
+.reduced-motion *::before,
+.reduced-motion *::after {
+  animation-duration: 0.1s !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.1s !important;
+  transition-delay: 0s !important;
+}
+
+.reduced-motion .animate-breathe,
+.reduced-motion .animate-breathe-present,
+.reduced-motion .animate-paper-glow {
+  animation: none !important;
+}
+
+/* ===== Torn Paper Right Edge ===== */
+.torn-edge-right {
+  position: relative;
+}
+.torn-edge-right::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: -8px;
+  width: 8px;
+  height: 100%;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 8 200' preserveAspectRatio='none'%3E%3Cpath d='M0,0 C2,10 1,20 3,30 C2,40 4,50 2,60 C3,70 1,80 4,90 C2,100 3,110 1,120 C4,130 2,140 3,150 C1,160 4,170 2,180 C3,190 2,200 0,200 L0,0 Z' fill='%23F3E9D7'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  pointer-events: none;
+  z-index: 2;
+  filter: drop-shadow(2px 0 2px rgba(140, 122, 102, 0.15));
+}
+
+/* ===== Rough Ink Border ===== */
+.ink-border {
+  position: relative;
+  border: 1.5px solid var(--color-ink);
+  border-radius: 3px;
+  box-shadow:
+    0.5px 0.5px 0 var(--color-ink),
+    -0.5px 0.5px 0 var(--color-ink-secondary),
+    1px -0.5px 0 var(--color-ink-subtle),
+    -0.5px -0.5px 0 var(--color-ink);
+}
+.ink-border::before {
+  content: '';
+  position: absolute;
+  inset: -2px;
+  border: 1px solid var(--color-ink);
+  border-radius: 4px;
+  opacity: 0.15;
+  transform: rotate(0.3deg);
+  pointer-events: none;
+}
+
+/* ===== Tape Decorations ===== */
+.tape-tl,
+.tape-tr {
+  position: relative;
+}
+.tape-tl::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: 12px;
+  width: 60px;
+  height: 22px;
+  background: rgba(232, 210, 140, 0.55);
+  transform: rotate(-6deg);
+  box-shadow: 0 1px 3px rgba(140, 122, 102, 0.2);
+  z-index: 3;
+  pointer-events: none;
+  border-left: 1px dashed rgba(180, 150, 90, 0.3);
+  border-right: 1px dashed rgba(180, 150, 90, 0.3);
+}
+.tape-tr::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  right: 12px;
+  width: 60px;
+  height: 22px;
+  background: rgba(232, 210, 140, 0.55);
+  transform: rotate(5deg);
+  box-shadow: 0 1px 3px rgba(140, 122, 102, 0.2);
+  z-index: 3;
+  pointer-events: none;
+  border-left: 1px dashed rgba(180, 150, 90, 0.3);
+  border-right: 1px dashed rgba(180, 150, 90, 0.3);
+}
+
+/* ===== Stitched Paper Strip ===== */
+.stitched-strip {
+  position: relative;
+  background: linear-gradient(90deg, #E6D5B8 0%, #EDE0CC 40%, #F0E4D0 100%);
+}
+.stitched-strip::after {
+  content: '';
+  position: absolute;
+  top: 8px;
+  right: 6px;
+  bottom: 8px;
+  width: 0;
+  border-right: 1.5px dashed var(--color-paper-stain);
+  opacity: 0.7;
+}
+
+/* ===== Watercolor Stains ===== */
+.stain-amber {
+  position: relative;
+}
+.stain-amber::before {
+  content: '';
+  position: absolute;
+  top: -20px;
+  right: -10px;
+  width: 120px;
+  height: 120px;
+  background: radial-gradient(ellipse at 30% 40%, rgba(200, 160, 90, 0.08) 0%, rgba(200, 160, 90, 0.04) 40%, transparent 70%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  transform: rotate(15deg) scale(1.2, 0.9);
+}
+.stain-green {
+  position: relative;
+}
+.stain-green::before {
+  content: '';
+  position: absolute;
+  bottom: -15px;
+  left: -20px;
+  width: 140px;
+  height: 100px;
+  background: radial-gradient(ellipse at 60% 50%, rgba(109, 139, 116, 0.07) 0%, rgba(109, 139, 116, 0.03) 45%, transparent 75%);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 0;
+  transform: rotate(-10deg) scale(1.1, 0.85);
+}
+
+/* ===== Living Page System ===== */
+.page-tone-1 {
+  background: #F5EBDA;
+  position: relative;
+}
+.page-tone-1::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse 180px 120px at 15% 20%, rgba(200, 160, 90, 0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 140px 100px at 85% 80%, rgba(109, 139, 116, 0.04) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.page-tone-2 {
+  background: #F2E8D4;
+  position: relative;
+}
+.page-tone-2::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse 200px 140px at 80% 15%, rgba(180, 140, 80, 0.06) 0%, transparent 70%),
+    radial-gradient(ellipse 160px 110px at 20% 90%, rgba(124, 157, 150, 0.04) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+.page-tone-3 {
+  background: #EFE4CF;
+  position: relative;
+}
+.page-tone-3::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse 150px 130px at 10% 70%, rgba(184, 149, 106, 0.06) 0%, transparent 65%),
+    radial-gradient(ellipse 170px 120px at 90% 60%, rgba(164, 180, 148, 0.05) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.page-tone-4 {
+  background: #F0E5D1;
+  position: relative;
+}
+.page-tone-4::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse 140px 160px at 50% 5%, rgba(200, 170, 100, 0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 130px 90px at 75% 95%, rgba(109, 139, 116, 0.05) 0%, transparent 60%),
+    radial-gradient(ellipse 100px 80px at 5% 50%, rgba(124, 157, 150, 0.03) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.page-tone-5 {
+  background: #F4E9D6;
+  position: relative;
+}
+.page-tone-5::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background:
+    radial-gradient(ellipse 200px 80px at 50% 100%, rgba(184, 149, 106, 0.05) 0%, transparent 70%),
+    radial-gradient(ellipse 120px 140px at 5% 30%, rgba(208, 201, 166, 0.06) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* ===== Rough Ink Underline ===== */
+.ink-underline {
+  position: relative;
+  display: inline-block;
+}
+.ink-underline::after {
+  content: '';
+  position: absolute;
+  left: -2px;
+  right: -2px;
+  bottom: -3px;
+  height: 2px;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 200 4' preserveAspectRatio='none'%3E%3Cpath d='M0,2 C10,1 20,3 30,2 C40,1 50,3 60,2 C70,0.5 80,3 90,2 C100,1 110,2.5 120,2 C130,1.5 140,3 150,2 C160,1 170,2.5 180,2 C190,1.5 200,2.5 200,2' fill='none' stroke='%232B2A28' stroke-width='1.5' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-size: 100% 100%;
+  background-repeat: no-repeat;
+  opacity: 0.85;
+}
