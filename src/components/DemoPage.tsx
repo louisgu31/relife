@@ -60,7 +60,7 @@ export function DemoPage() {
             ))}
           </div>
           <a
-            href="/ambient"
+            href="/relife/ambient"
             className="hidden sm:inline-flex px-4 py-2 bg-ink text-paper rounded text-sm font-sans font-medium hover:bg-ink-secondary transition-colors"
           >
             打开
@@ -115,7 +115,7 @@ function OverviewPage() {
 
               <div className="flex flex-col sm:flex-row gap-3">
                 <a
-                  href="/ambient"
+                  href="/relife/ambient"
                   className="inline-flex items-center justify-center gap-2 px-6 py-3 bg-ink text-paper rounded font-sans font-medium hover:bg-ink-secondary transition-colors"
                 >
                   体验 ReLife
@@ -300,7 +300,7 @@ function OverviewPage() {
             点击下方启动完整的 ReLife 陪伴界面。手机横屏效果最佳，但任何设备都可以。
           </p>
           <a
-            href="/ambient"
+            href="/relife/ambient"
             className="inline-flex items-center gap-2 px-8 py-4 bg-ink text-paper rounded font-serif font-medium text-lg hover:bg-ink-secondary transition-colors"
           >
             启动 ReLife
