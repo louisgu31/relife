@@ -15,6 +15,9 @@ import {
   Sunset,
   BookOpen,
   Sparkles,
+  X,
+  Phone,
+  MapPin,
 } from 'lucide-react'
 
 export function DemoPage() {
@@ -319,8 +322,101 @@ function OverviewPage() {
    PAGE 2 — 守护 (Care)
    ============================================================ */
 function CarePage() {
+  const [showFallAlert, setShowFallAlert] = useState(false)
+  const [fallCountdown, setFallCountdown] = useState(30)
+  const [isCountingDown, setIsCountingDown] = useState(false)
+
+  const triggerFallTest = () => {
+    setShowFallAlert(true)
+    setIsCountingDown(true)
+    setFallCountdown(30)
+  }
+
+  useEffect(() => {
+    if (isCountingDown && fallCountdown > 0) {
+      const timer = setTimeout(() => setFallCountdown(fallCountdown - 1), 1000)
+      return () => clearTimeout(timer)
+    }
+  }, [isCountingDown, fallCountdown])
+
+  const handleIAmOkay = () => {
+    setShowFallAlert(false)
+    setIsCountingDown(false)
+  }
+
   return (
     <>
+      {/* Fall Alert Modal */}
+      {showFallAlert && (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/50 backdrop-blur-sm">
+          <div className="ledger-card paper-texture p-6 max-w-md w-full animate-fade-in relative">
+            <button
+              onClick={handleIAmOkay}
+              className="absolute top-4 right-4 p-1 rounded-full hover:bg-paper-fold transition-colors"
+            >
+              <X className="w-5 h-5 text-ink-subtle" />
+            </button>
+            
+            <div className="text-center">
+              <div className="w-16 h-16 mx-auto mb-4 rounded-full bg-alert/20 flex items-center justify-center animate-pulse">
+                <AlertTriangle className="w-8 h-8 text-health" />
+              </div>
+              
+              <h3 className="text-xl font-serif font-semibold text-ink mb-2">
+                检测到跌倒
+              </h3>
+              <p className="text-ink-secondary font-serif text-sm mb-4">
+                ReLife 检测到可能的跌倒情况
+              </p>
+              
+              <div className="bg-health/10 border border-health/30 rounded-lg p-4 mb-4">
+                <div className="flex items-center gap-2 mb-2">
+                  <Heart className="w-4 h-4 text-health" />
+                  <span className="text-sm font-serif text-ink">
+                    心率 95 bpm
+                  </span>
+                </div>
+                <div className="flex items-center gap-2 mb-2">
+                  <MapPin className="w-4 h-4 text-health" />
+                  <span className="text-sm font-serif text-ink">
+                    客厅 · 检测位置
+                  </span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Phone className="w-4 h-4 text-health" />
+                  <span className="text-sm font-serif text-ink">
+                    紧急联系人：女儿
+                  </span>
+                </div>
+              </div>
+              
+              <div className="mb-4">
+                <p className="text-health font-hand text-lg mb-1">
+                  {fallCountdown} 秒后自动通知紧急联系人
+                </p>
+                <div className="w-full h-2 bg-paper-stain/30 rounded-full overflow-hidden">
+                  <div 
+                    className="h-full bg-health transition-all duration-1000"
+                    style={{ width: `${(fallCountdown / 30) * 100}%` }}
+                  />
+                </div>
+              </div>
+              
+              <button
+                onClick={handleIAmOkay}
+                className="w-full py-3 bg-health text-paper rounded font-serif font-medium hover:bg-health/80 transition-colors"
+              >
+                我没事，取消警报
+              </button>
+              
+              <p className="text-xs text-ink-subtle mt-3 font-hand">
+                这是演示测试。真实使用中，跌倒检测结合摄像头姿态识别与加速度传感器。
+              </p>
+            </div>
+          </div>
+        </div>
+      )}
+      
       {/* === Health Monitoring Detailed === */}
       <section className="relative z-10 px-6 md:px-12 py-16 md:py-24 bg-paper-fold/30">
         <div className="max-w-6xl mx-auto">
@@ -383,6 +479,19 @@ function CarePage() {
               color="health"
               note="只在真正需要时干预，守护安全但不侵犯隐私"
             />
+          </div>
+
+          <div className="text-center mt-10">
+            <button
+              onClick={triggerFallTest}
+              className="inline-flex items-center gap-2 px-6 py-3 bg-alert/20 text-health rounded border border-alert/40 hover:bg-alert/30 transition-all font-hand text-base"
+            >
+              <AlertTriangle className="w-5 h-5" />
+              点击测试跌倒警报
+            </button>
+            <p className="text-xs text-ink-subtle mt-2 font-hand">
+              体验跌倒检测后的完整响应流程
+            </p>
           </div>
 
           {/* === Heart Rate Detection === */}
